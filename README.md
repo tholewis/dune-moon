@@ -133,10 +133,19 @@ Comprehensive developer documentation is available in the `docs/` folder:
 - [Architecture Guide](docs/Architecture.md) - App structure and design patterns
 - [Moon Phase Calculations](docs/MoonPhaseCalculation.md) - Astronomical algorithms explained
 - [UI Components](docs/UIComponents.md) - SwiftUI view breakdown
-- [Data Flow](docs/DataFlow.md) - State management and data passing
-- [Location Services](docs/LocationServices.md) - GPS implementation details
-- [Custom Shapes](docs/CustomShapes.md) - Shape protocol implementations
 - [Build & Run Guide](docs/BuildAndRun.md) - Setup instructions for developers
+- [Claude Code Skills](docs/ClaudeCodeSkills.md) - Custom development automation tools
+
+## 🤖 Claude Code Skills
+
+This project includes custom Claude Code skills for development automation:
+
+- **`/test-moon-phases`** - Validate calculation accuracy against known data
+- **`/preview-arrakis`** - Instant UI preview and design iteration
+- **`/update-docs`** - Auto-sync documentation with code changes
+- **`/check-astronomy`** - Verify accuracy against NASA/USNO reference data
+
+See [Claude Code Skills Documentation](docs/ClaudeCodeSkills.md) for detailed usage guide.
 
 ## 🎨 Design Inspiration
 
