@@ -1,3 +1,13 @@
+---
+title: "Build & Run Guide"
+description: "Step-by-step instructions for building, running, and deploying Lithium on iOS devices and simulators"
+category: "quickstart"
+version: "1.0.0"
+last_updated: "2026-04-07"
+tags: ["build", "installation", "setup", "xcode", "deployment"]
+audience: "developers"
+---
+
 # Build & Run Guide
 
 ## Prerequisites

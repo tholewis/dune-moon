@@ -1,0 +1,155 @@
+# Lithium - Dune-Inspired Moon Phase Tracker
+
+> AI-optimized project summary for LLMs
+
+## Project Overview
+
+**Name:** Lithium
+**Type:** iOS Application
+**Language:** Swift 5.9+
+**Framework:** SwiftUI (iOS 17.0+)
+**License:** MIT
+**Repository:** https://github.com/tholewis/dune-moon
+
+Lithium is a Dune-inspired moon phase tracking iOS app that displays accurate lunar data with a themed user interface featuring Arrakis (Dune's desert planet) aesthetics.
+
+## Core Features
+
+1. **Real-time Moon Phase Display** - Shows current moon phase with emoji representation
+2. **Timeline View** - 7-day forecast of upcoming moon phases
+3. **Astronomical Calculations** - Precise phase, illumination, moonrise/moonset times
+4. **Arrakis Observatory View** - Fullscreen vintage poster-style view with dynamic moon
+5. **Location-Aware** - Uses device location for accurate rise/set times
+
+## Documentation Structure
+
+All documentation files include frontmatter metadata (title, description, category, version, last_updated).
+
+### Quick Start
+- `README.md` - Project overview, installation, and usage
+- `docs/BuildAndRun.md` - Step-by-step build instructions
+
+### Architecture & Design
+- `docs/Architecture.md` - MVVM patterns, state management, component structure
+- `docs/UIComponents.md` - SwiftUI views, layout strategies, design system
+
+### Technical Reference
+- `docs/MoonPhaseCalculation.md` - Astronomical algorithms, formulas, accuracy
+- `docs/ClaudeCodeSkills.md` - Custom development automation skills
+
+### Development Tools
+- `.claude-code/skills/` - 4 custom Claude Code skills for testing and previewing
+
+## Key Code Locations
+
+### Core Files
+- `Lithium/LithiumApp.swift` - App entry point
+- `Lithium/ContentView.swift` - Main view container with tab navigation
+- `Lithium/MoonPhaseCalculator.swift` - Astronomical calculation engine
+- `Lithium/LocationManager.swift` - CoreLocation wrapper for GPS data
+
+### View Components
+- `Lithium/MoonPhaseView.swift` - Main moon display with phase emoji
+- `Lithium/TimelineView.swift` - 7-day forecast timeline
+- `Lithium/ArrakisMoonView.swift` - Fullscreen Arrakis observatory poster view
+- `Lithium/PhaseInfoPanel.swift` - Information panel showing phase details
+- `Lithium/CalendarGridView.swift` - Calendar grid with moon phases
+
+### Assets
+- `Lithium/Assets.xcassets/ArrakisPoster.imageset/` - Vintage Dune poster artwork
+
+## Astronomical Calculations
+
+### Moon Phase Formula
+Uses synodic month calculation:
+- **Synodic Month:** 29.530588853 days (average)
+- **Reference:** New Moon on January 6, 2000, 18:14 UTC
+- **Phase Value:** 0.0 (new) to 1.0 (cycle complete)
+
+### Phase to Emoji Mapping
+```swift
+0.00-0.05: 🌑 New Moon
+0.05-0.20: 🌒 Waxing Crescent
+0.20-0.30: 🌓 First Quarter
+0.30-0.45: 🌔 Waxing Gibbous
+0.45-0.55: 🌕 Full Moon
+0.55-0.70: 🌖 Waning Gibbous
+0.70-0.80: 🌗 Last Quarter
+0.80-1.00: 🌘 Waning Crescent
+```
+
+### Illumination Calculation
+```
+illumination = (1 - cos(phase * 2π)) / 2 * 100%
+```
+
+### Moonrise/Moonset
+Based on observer's latitude/longitude and date. Uses astronomical algorithms for lunar position relative to local horizon.
+
+## Design System
+
+### Color Palette
+- **Spice Orange:** `Color(red: 1.0, green: 0.6, blue: 0.2)` - Primary accent
+- **Desert Sand:** `Color(red: 0.96, green: 0.94, blue: 0.90)` - Backgrounds
+- **Dark Brown:** `Color(red: 0.25, green: 0.20, blue: 0.15)` - Primary text
+- **Medium Brown:** `Color(red: 0.40, green: 0.32, blue: 0.25)` - Secondary text
+
+### Typography
+- **Display:** `.system(size: 44, weight: .black, design: .serif)` - Titles
+- **Body:** `.system(size: 20, weight: .bold, design: .serif)` - Phase names
+- **Caption:** `.system(size: 9, weight: .black, design: .serif)` - Labels
+
+## Common Development Tasks
+
+### Build the Project
+```bash
+# Open in Xcode
+open Lithium.xcodeproj
+
+# Or build from command line
+xcodebuild -project Lithium.xcodeproj -scheme Lithium -sdk iphonesimulator
+```
+
+### Run Tests
+```bash
+# Use Claude Code skill
+/test-moon-phases
+
+# Or run manually in Xcode
+⌘U (Cmd+U)
+```
+
+### Preview Arrakis View
+```bash
+# Use Claude Code skill
+/preview-arrakis waxing_gibbous
+```
+
+### Update Documentation
+```bash
+# Use Claude Code skill
+/update-docs
+```
+
+## Version Information
+
+- **Current Version:** 1.0.0
+- **iOS Deployment Target:** 17.0
+- **Swift Version:** 5.9
+- **Last Updated:** 2026-04-07
+
+## External References
+
+- NASA Moon Phase Data: https://svs.gsfc.nasa.gov/cgi-bin/details.cgi?aid=4442
+- USNO Astronomical Data: https://aa.usno.navy.mil/data/MoonPhases
+- Astronomical Algorithms by Jean Meeus (calculation reference)
+
+## Support and Contact
+
+- **Issues:** https://github.com/tholewis/dune-moon/issues
+- **License:** MIT (see LICENSE file)
+- **Author:** Thomas Lewis
+
+---
+
+**For AI Assistants:** This project uses pure Swift/SwiftUI with no external dependencies. All astronomical calculations are self-contained in `MoonPhaseCalculator.swift`. The app follows standard SwiftUI patterns with `@StateObject` for state management. When modifying code, maintain the Dune theme aesthetics (desert colors, vintage poster style) and ensure astronomical accuracy.

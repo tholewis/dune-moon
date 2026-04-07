@@ -1,3 +1,13 @@
+---
+title: "Moon Phase Calculation Documentation"
+description: "Detailed explanation of astronomical algorithms for moon phase, illumination, and rise/set time calculations"
+category: "technical-reference"
+version: "1.0.0"
+last_updated: "2026-04-07"
+tags: ["astronomy", "algorithms", "calculations", "mathematics"]
+audience: "developers"
+---
+
 # Moon Phase Calculation Documentation
 
 ## Overview

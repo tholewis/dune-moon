@@ -1,3 +1,13 @@
+---
+title: "UI Components Documentation"
+description: "Complete reference for all SwiftUI views, layouts, and design system elements in Lithium"
+category: "ui-reference"
+version: "1.0.0"
+last_updated: "2026-04-07"
+tags: ["swiftui", "ui", "components", "views", "design-system"]
+audience: "developers"
+---
+
 # UI Components Documentation
 
 ## Overview

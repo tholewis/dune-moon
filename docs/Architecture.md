@@ -1,3 +1,13 @@
+---
+title: "Lithium Architecture Guide"
+description: "Comprehensive guide to Lithium's SwiftUI architecture, design patterns, and data flow"
+category: "architecture"
+version: "1.0.0"
+last_updated: "2026-04-07"
+tags: ["swiftui", "mvvm", "architecture", "design-patterns"]
+audience: "developers"
+---
+
 # Lithium Architecture Guide
 
 ## Overview

@@ -1,6 +1,22 @@
+---
+title: "Lithium - Dune-Inspired Moon Phase Tracker"
+description: "iOS app for tracking lunar phases with accurate astronomical calculations and Dune-themed interface"
+category: "overview"
+version: "1.0.0"
+last_updated: "2026-04-07"
+tags: ["ios", "swiftui", "astronomy", "moon-phases", "dune", "mobile-app"]
+audience: "all"
+platform: "iOS 17.0+"
+language: "Swift 5.9+"
+license: "MIT"
+repository: "https://github.com/tholewis/dune-moon"
+---
+
 # 🌙 Lithium - Dune-Inspired Moon Phase Tracker
 
 A beautiful iOS app that tracks lunar phases with a stunning Dune/Arrakis-inspired interface. Built with SwiftUI, Lithium combines accurate astronomical calculations with an immersive vintage poster aesthetic.
+
+> **Quick Links:** [Documentation Index](docs/index.md) | [Build Guide](docs/BuildAndRun.md) | [GitHub](https://github.com/tholewis/dune-moon)
 
 ![Lithium Main Interface](docs/images/main-interface.png)
 
@@ -57,8 +73,8 @@ A beautiful iOS app that tracks lunar phases with a stunning Dune/Arrakis-inspir
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/Lithium.git
-cd Lithium
+git clone https://github.com/tholewis/dune-moon.git
+cd dune-moon
 ```
 
 2. Open the project in Xcode:
@@ -128,13 +144,25 @@ For detailed technical documentation, see the [docs folder](docs/).
 
 ## 📚 Documentation
 
-Comprehensive developer documentation is available in the `docs/` folder:
+**👉 Start here:** [Documentation Index](docs/index.md) - Complete navigation guide to all documentation
 
-- [Architecture Guide](docs/Architecture.md) - App structure and design patterns
-- [Moon Phase Calculations](docs/MoonPhaseCalculation.md) - Astronomical algorithms explained
-- [UI Components](docs/UIComponents.md) - SwiftUI view breakdown
-- [Build & Run Guide](docs/BuildAndRun.md) - Setup instructions for developers
-- [Claude Code Skills](docs/ClaudeCodeSkills.md) - Custom development automation tools
+Comprehensive developer documentation is available:
+
+### Quick Start
+- **[Build & Run Guide](docs/BuildAndRun.md)** - Installation, setup, and deployment instructions
+- **[Documentation Index](docs/index.md)** - Navigation hub for all documentation
+
+### Architecture & Design
+- **[Architecture Guide](docs/Architecture.md)** - MVVM patterns, data flow, state management
+- **[UI Components](docs/UIComponents.md)** - SwiftUI views, design system, color palette
+
+### Technical Reference
+- **[Moon Phase Calculations](docs/MoonPhaseCalculation.md)** - Astronomical algorithms and formulas
+- **[Claude Code Skills](docs/ClaudeCodeSkills.md)** - Development automation and testing tools
+
+### AI-Friendly Resources
+- **[CLAUDE.md](CLAUDE.md)** - AI assistant documentation standards and guidelines
+- **[llms.txt](llms.txt)** - AI-optimized project summary and quick reference
 
 ## 🤖 Claude Code Skills
 

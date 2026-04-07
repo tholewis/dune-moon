@@ -1,3 +1,13 @@
+---
+title: "Claude Code Skills Documentation"
+description: "Complete guide to custom automation skills for testing, previewing, and maintaining the Lithium project"
+category: "development-tools"
+version: "1.0.0"
+last_updated: "2026-04-07"
+tags: ["automation", "skills", "testing", "documentation", "claude-code"]
+audience: "developers"
+---
+
 # Claude Code Skills Documentation
 
 ## Overview
