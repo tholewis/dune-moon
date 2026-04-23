@@ -176,7 +176,7 @@ Suggest running `/update-docs` when:
 Scan for new features by looking for:
 - New struct/class definitions
 - New public functions
-- New files in Lithium/
+- New files in Dune Moon/
 - New image assets
 
 ### Breaking Changes

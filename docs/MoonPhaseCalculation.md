@@ -12,7 +12,7 @@ audience: "developers"
 
 ## Overview
 
-Lithium implements astronomical algorithms to accurately calculate moon phases, illumination percentages, and moonrise/moonset times. This document explains the mathematics and implementation details.
+Dune Moon implements astronomical algorithms to accurately calculate moon phases, illumination percentages, and moonrise/moonset times. This document explains the mathematics and implementation details.
 
 ## Synodic Month Method
 

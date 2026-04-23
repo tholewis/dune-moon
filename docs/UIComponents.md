@@ -1,6 +1,6 @@
 ---
 title: "UI Components Documentation"
-description: "Complete reference for all SwiftUI views, layouts, and design system elements in Lithium"
+description: "Complete reference for all SwiftUI views, layouts, and design system elements in Dune Moon"
 category: "ui-reference"
 version: "1.0.0"
 last_updated: "2026-04-07"
@@ -12,7 +12,7 @@ audience: "developers"
 
 ## Overview
 
-Lithium's user interface is built entirely with SwiftUI, featuring custom components for moon visualization, timeline navigation, and an immersive poster view.
+Dune Moon's user interface is built entirely with SwiftUI, featuring custom components for moon visualization, timeline navigation, and an immersive poster view.
 
 ## Main Views
 

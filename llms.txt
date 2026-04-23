@@ -1,17 +1,17 @@
-# Lithium - Dune-Inspired Moon Phase Tracker
+# Dune Moon - Dune-Inspired Moon Phase Tracker
 
 > AI-optimized project summary for LLMs
 
 ## Project Overview
 
-**Name:** Lithium
+**Name:** Dune Moon
 **Type:** iOS Application
 **Language:** Swift 5.9+
 **Framework:** SwiftUI (iOS 17.0+)
 **License:** MIT
 **Repository:** https://github.com/tholewis/dune-moon
 
-Lithium is a Dune-inspired moon phase tracking iOS app that displays accurate lunar data with a themed user interface featuring Arrakis (Dune's desert planet) aesthetics.
+Dune Moon is a Dune-inspired moon phase tracking iOS app that displays accurate lunar data with a themed user interface featuring Arrakis (Dune's desert planet) aesthetics.
 
 ## Core Features
 
@@ -43,20 +43,20 @@ All documentation files include frontmatter metadata (title, description, catego
 ## Key Code Locations
 
 ### Core Files
-- `Lithium/LithiumApp.swift` - App entry point
-- `Lithium/ContentView.swift` - Main view container with tab navigation
-- `Lithium/MoonPhaseCalculator.swift` - Astronomical calculation engine
-- `Lithium/LocationManager.swift` - CoreLocation wrapper for GPS data
+- `DuneMoon/DuneMoonApp.swift` - App entry point
+- `DuneMoon/ContentView.swift` - Main view container with tab navigation
+- `DuneMoon/MoonPhaseCalculator.swift` - Astronomical calculation engine
+- `DuneMoon/LocationManager.swift` - CoreLocation wrapper for GPS data
 
 ### View Components
-- `Lithium/MoonPhaseView.swift` - Main moon display with phase emoji
-- `Lithium/TimelineView.swift` - 7-day forecast timeline
-- `Lithium/ArrakisMoonView.swift` - Fullscreen Arrakis observatory poster view
-- `Lithium/PhaseInfoPanel.swift` - Information panel showing phase details
-- `Lithium/CalendarGridView.swift` - Calendar grid with moon phases
+- `DuneMoon/MoonPhaseView.swift` - Main moon display with phase emoji
+- `DuneMoon/TimelineView.swift` - 7-day forecast timeline
+- `DuneMoon/ArrakisMoonView.swift` - Fullscreen Arrakis observatory poster view
+- `DuneMoon/PhaseInfoPanel.swift` - Information panel showing phase details
+- `DuneMoon/CalendarGridView.swift` - Calendar grid with moon phases
 
 ### Assets
-- `Lithium/Assets.xcassets/ArrakisPoster.imageset/` - Vintage Dune poster artwork
+- `DuneMoon/Assets.xcassets/ArrakisPoster.imageset/` - Vintage Dune poster artwork
 
 ## Astronomical Calculations
 
@@ -104,10 +104,10 @@ Based on observer's latitude/longitude and date. Uses astronomical algorithms fo
 ### Build the Project
 ```bash
 # Open in Xcode
-open Lithium.xcodeproj
+open DuneMoon.xcodeproj
 
 # Or build from command line
-xcodebuild -project Lithium.xcodeproj -scheme Lithium -sdk iphonesimulator
+xcodebuild -project DuneMoon.xcodeproj -scheme DuneMoon -sdk iphonesimulator
 ```
 
 ### Run Tests

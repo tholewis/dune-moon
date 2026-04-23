@@ -9,7 +9,7 @@
 When the user runs `/check-astronomy`, you should:
 
 1. **Select verification dates** (known astronomical events)
-2. **Calculate using Lithium's algorithms**
+2. **Calculate using Dune Moon's algorithms**
 3. **Compare against reference data**
 4. **Report accuracy and discrepancies**
 
@@ -76,7 +76,7 @@ Full Moons:
 
 ## Validation Process
 
-### Step 1: Calculate with Lithium
+### Step 1: Calculate with Dune Moon
 
 For each reference date:
 
@@ -104,7 +104,7 @@ Check accuracy:
 Full Moon - January 25, 2024, 17:54 UTC
 Expected: Phase = 0.5, Illumination = 100%
 
-Lithium calculated:
+Dune Moon calculated:
   Phase: 0.498
   Illumination: 99.2%
   Phase Name: Full Moon
@@ -153,19 +153,19 @@ Testing against NASA/USNO reference data...
 
 ✅ New Moon - January 11, 2024
    Reference: 11:57 UTC
-   Lithium Phase: 0.003 (within 0.01) ✅
+   Dune Moon Phase: 0.003 (within 0.01) ✅
    Illumination: 0.8% (within 2%) ✅
    Accuracy: Excellent
 
 ✅ Full Moon - January 25, 2024
    Reference: 17:54 UTC
-   Lithium Phase: 0.498 (within 0.01) ✅
+   Dune Moon Phase: 0.498 (within 0.01) ✅
    Illumination: 99.2% (within 2%) ✅
    Accuracy: Excellent
 
 ⚠️  First Quarter - March 17, 2024
    Reference: 04:11 UTC
-   Lithium Phase: 0.268 (within 0.02) ⚠️
+   Dune Moon Phase: 0.268 (within 0.02) ⚠️
    Illumination: 53.6% (within 5%) ⚠️
    Accuracy: Acceptable (±18 hours)
 
@@ -220,7 +220,7 @@ Reference (USNO):
   Moonrise: 17:23 PST
   Moonset: 06:15 PST (next day)
 
-Lithium Calculated:
+Dune Moon Calculated:
   Moonrise: 17:31 PST (+8 min)
   Moonset: 06:22 PST (+7 min)
 
@@ -242,14 +242,14 @@ Test calculations for dates far from reference:
 Testing: January 1, 1990 (32 years before reference)
 Expected accumulated error: ~0.5-1.0 days
 
-Lithium Phase: 0.46
+Dune Moon Phase: 0.46
 Expected: ~0.47 (Full Moon region)
 Error: 0.01 ✅
 
 Testing: January 1, 2050 (24 years after reference)
 Expected accumulated error: ~0.3-0.6 days
 
-Lithium Phase: 0.23
+Dune Moon Phase: 0.23
 Expected: ~0.25 (First Quarter region)
 Error: 0.02 ⚠️
 ```
