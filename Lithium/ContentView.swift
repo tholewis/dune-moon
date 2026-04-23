@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Lithium
+//  DuneMoon
 //
 //  Dune-inspired Moon Phase Tracker
 //

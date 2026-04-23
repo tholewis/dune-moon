@@ -1,6 +1,6 @@
 //
 //  MoonPhaseCalculator.swift
-//  Lithium
+//  DuneMoon
 //
 //  Moon phase calculations based on astronomical algorithms
 //
