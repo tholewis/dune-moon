@@ -1,6 +1,6 @@
 //
 //  TimelineView.swift
-//  Lithium
+//  DuneMoon
 //
 //  Interactive timeline for scrubbing through dates
 //

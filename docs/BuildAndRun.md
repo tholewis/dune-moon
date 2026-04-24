@@ -1,6 +1,6 @@
 ---
 title: "Build & Run Guide"
-description: "Step-by-step instructions for building, running, and deploying Lithium on iOS devices and simulators"
+description: "Step-by-step instructions for building, running, and deploying Dune Moon on iOS devices and simulators"
 category: "quickstart"
 version: "1.0.0"
 last_updated: "2026-04-07"
@@ -32,17 +32,17 @@ audience: "developers"
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/Lithium.git
-cd Lithium
+git clone https://github.com/yourusername/Dune Moon.git
+cd Dune Moon
 ```
 
 ### 2. Open in Xcode
 
 ```bash
-open Lithium.xcodeproj
+open DuneMoon.xcodeproj
 ```
 
-Or double-click `Lithium.xcodeproj` in Finder.
+Or double-click `DuneMoon.xcodeproj` in Finder.
 
 ### 3. Select Target Device
 
@@ -54,8 +54,8 @@ In Xcode's toolbar:
 
 ### 4. Configure Signing (if using physical device)
 
-1. Select the "Lithium" project in the navigator
-2. Select the "Lithium" target
+1. Select the "Dune Moon" project in the navigator
+2. Select the "Dune Moon" target
 3. Go to "Signing & Capabilities" tab
 4. Under "Team", select your Apple Developer account
 5. Xcode will automatically generate a provisioning profile
@@ -71,10 +71,10 @@ Or click the ▶️ Play button in Xcode's toolbar.
 ## Project Structure
 
 ```
-Lithium/
-├── Lithium.xcodeproj          # Xcode project file
-├── Lithium/                   # Source code
-│   ├── LithiumApp.swift       # App entry point
+Dune Moon/
+├── DuneMoon.xcodeproj          # Xcode project file
+├── Dune Moon/                   # Source code
+│   ├── DuneMoonApp.swift       # App entry point
 │   ├── ContentView.swift
 │   ├── MoonPhaseView.swift
 │   ├── MoonPhaseCalculator.swift
@@ -100,10 +100,10 @@ Lithium/
 The app requires location permissions. Xcode automatically manages Info.plist, but verify:
 
 **Key**: `NSLocationWhenInUseUsageDescription`
-**Value**: "Lithium needs your location to calculate accurate moonrise and moonset times for your area."
+**Value**: "Dune Moon needs your location to calculate accurate moonrise and moonset times for your area."
 
 To check/edit:
-1. Select Lithium target
+1. Select Dune Moon target
 2. Go to "Info" tab
 3. Find "Privacy - Location When In Use Usage Description"
 
@@ -331,15 +331,15 @@ jobs:
     - name: Build
       run: |
         xcodebuild clean build \
-          -project Lithium.xcodeproj \
-          -scheme Lithium \
+          -project DuneMoon.xcodeproj \
+          -scheme Dune Moon \
           -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
 
     - name: Test
       run: |
         xcodebuild test \
-          -project Lithium.xcodeproj \
-          -scheme Lithium \
+          -project DuneMoon.xcodeproj \
+          -scheme Dune Moon \
           -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
 ```
 

@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Skills Documentation"
-description: "Complete guide to custom automation skills for testing, previewing, and maintaining the Lithium project"
+description: "Complete guide to custom automation skills for testing, previewing, and maintaining the Dune Moon project"
 category: "development-tools"
 version: "1.0.0"
 last_updated: "2026-04-07"
@@ -12,11 +12,11 @@ audience: "developers"
 
 ## Overview
 
-Lithium includes four custom Claude Code skills designed to streamline development, ensure code quality, and maintain documentation. These skills automate common tasks and provide fast feedback loops for developers.
+Dune Moon includes four custom Claude Code skills designed to streamline development, ensure code quality, and maintain documentation. These skills automate common tasks and provide fast feedback loops for developers.
 
 ## What are Claude Code Skills?
 
-Skills are specialized commands that Claude Code can execute to perform specific tasks within your project. They're like custom developer tools tailored specifically to Lithium's needs.
+Skills are specialized commands that Claude Code can execute to perform specific tasks within your project. They're like custom developer tools tailored specifically to Dune Moon's needs.
 
 ### Benefits
 
@@ -324,7 +324,7 @@ Can specify what to update:
 
 #### What It Does
 
-Validates the astronomical accuracy of Lithium's calculations by comparing results against verified NASA JPL Horizons and US Naval Observatory data.
+Validates the astronomical accuracy of Dune Moon's calculations by comparing results against verified NASA JPL Horizons and US Naval Observatory data.
 
 **Verification data:**
 - 20+ verified moon phase dates (2024-2026)
@@ -398,13 +398,13 @@ Testing against NASA/USNO reference data...
 
 ✅ New Moon - January 11, 2024
    Reference: 11:57 UTC
-   Lithium Phase: 0.003 (within 0.01) ✅
+   Dune Moon Phase: 0.003 (within 0.01) ✅
    Illumination: 0.8% (within 2%) ✅
    Accuracy: Excellent
 
 ✅ Full Moon - January 25, 2024
    Reference: 17:54 UTC
-   Lithium Phase: 0.498 (within 0.01) ✅
+   Dune Moon Phase: 0.498 (within 0.01) ✅
    Illumination: 99.2% (within 2%) ✅
    Accuracy: Excellent
 

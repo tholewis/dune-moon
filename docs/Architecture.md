@@ -1,6 +1,6 @@
 ---
-title: "Lithium Architecture Guide"
-description: "Comprehensive guide to Lithium's SwiftUI architecture, design patterns, and data flow"
+title: "Dune Moon Architecture Guide"
+description: "Comprehensive guide to Dune Moon's SwiftUI architecture, design patterns, and data flow"
 category: "architecture"
 version: "1.0.0"
 last_updated: "2026-04-07"
@@ -8,17 +8,17 @@ tags: ["swiftui", "mvvm", "architecture", "design-patterns"]
 audience: "developers"
 ---
 
-# Lithium Architecture Guide
+# Dune Moon Architecture Guide
 
 ## Overview
 
-Lithium follows a clean SwiftUI architecture with reactive state management and separation of concerns. The app is structured around a single-page interface with modal presentations and leverages SwiftUI's declarative syntax for UI composition.
+Dune Moon follows a clean SwiftUI architecture with reactive state management and separation of concerns. The app is structured around a single-page interface with modal presentations and leverages SwiftUI's declarative syntax for UI composition.
 
 ## Design Patterns
 
 ### MVVM (Model-View-ViewModel)
 
-While SwiftUI doesn't require traditional MVVM, Lithium organizes code following similar principles:
+While SwiftUI doesn't require traditional MVVM, Dune Moon organizes code following similar principles:
 
 - **Models**: `MoonPhaseData` struct containing phase information
 - **Views**: SwiftUI views (`ContentView`, `MoonPhaseView`, etc.)
@@ -30,7 +30,7 @@ Each file has a single, well-defined responsibility:
 
 | File | Responsibility |
 |------|---------------|
-| `LithiumApp.swift` | App lifecycle and entry point |
+| `DuneMoonApp.swift` | App lifecycle and entry point |
 | `ContentView.swift` | Main UI composition and state coordination |
 | `MoonPhaseCalculator.swift` | All astronomical calculations |
 | `LocationManager.swift` | GPS and location services |

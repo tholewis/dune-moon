@@ -1,6 +1,6 @@
 ---
-title: "Lithium Documentation Index"
-description: "Complete navigation guide to all Lithium project documentation"
+title: "Dune Moon Documentation Index"
+description: "Complete navigation guide to all Dune Moon project documentation"
 category: "index"
 version: "1.0.0"
 last_updated: "2026-04-07"
@@ -8,15 +8,15 @@ tags: ["index", "navigation", "documentation"]
 audience: "all"
 ---
 
-# Lithium Documentation Index
+# Dune Moon Documentation Index
 
-> Complete guide to understanding, building, and extending the Lithium moon phase tracker
+> Complete guide to understanding, building, and extending the Dune Moon moon phase tracker
 
 ## Quick Navigation
 
 ### 🚀 Getting Started
 
-**New to Lithium?** Start here:
+**New to Dune Moon?** Start here:
 
 1. [README.md](../README.md) - Project overview and features
 2. [Build & Run Guide](BuildAndRun.md) - Installation and setup instructions
@@ -35,7 +35,7 @@ audience: "all"
 | [README](../README.md) | Project overview, features, installation, usage | All users |
 
 ### Architecture & Design
-*Understand how Lithium is structured*
+*Understand how Dune Moon is structured*
 
 | Document | Description | Audience |
 |----------|-------------|----------|
@@ -63,7 +63,7 @@ audience: "all"
 
 ## Documentation by Use Case
 
-### "I want to build and run Lithium"
+### "I want to build and run Dune Moon"
 1. Read [Build & Run Guide](BuildAndRun.md) - Prerequisites and installation
 2. Follow step-by-step instructions to build in Xcode
 3. Reference [Troubleshooting section](BuildAndRun.md#common-issues) if needed
@@ -128,8 +128,8 @@ audience: "all"
 
 ### Source Code
 ```
-Lithium/Lithium/
-├── LithiumApp.swift           # App entry point
+DuneMoon/DuneMoon/
+├── DuneMoonApp.swift           # App entry point
 ├── ContentView.swift          # Main view container
 ├── MoonPhaseCalculator.swift  # Astronomical calculations
 ├── LocationManager.swift      # GPS and location services

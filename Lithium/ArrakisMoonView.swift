@@ -1,6 +1,6 @@
 //
 //  ArrakisMoonView.swift
-//  Lithium
+//  DuneMoon
 //
 //  Vintage poster with dynamic moon emoji
 //

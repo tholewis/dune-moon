@@ -1,6 +1,6 @@
 //
 //  AppIconGenerator.swift
-//  Lithium
+//  DuneMoon
 //
 //  Generates Dune-inspired app icon
 //

@@ -1,6 +1,6 @@
 //
 //  LocationManager.swift
-//  Lithium
+//  DuneMoon
 //
 //  Manages user location for moonrise/moonset calculations
 //

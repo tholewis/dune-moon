@@ -1,5 +1,5 @@
 ---
-title: "Lithium - Dune-Inspired Moon Phase Tracker"
+title: "Dune Moon - Dune-Inspired Moon Phase Tracker"
 description: "iOS app for tracking lunar phases with accurate astronomical calculations and Dune-themed interface"
 category: "overview"
 version: "1.0.0"
@@ -12,13 +12,13 @@ license: "MIT"
 repository: "https://github.com/tholewis/dune-moon"
 ---
 
-# 🌙 Lithium - Dune-Inspired Moon Phase Tracker
+# 🌙 Dune Moon - Dune-Inspired Moon Phase Tracker
 
-A beautiful iOS app that tracks lunar phases with a stunning Dune/Arrakis-inspired interface. Built with SwiftUI, Lithium combines accurate astronomical calculations with an immersive vintage poster aesthetic.
+A beautiful iOS app that tracks lunar phases with a stunning Dune/Arrakis-inspired interface. Built with SwiftUI, Dune Moon combines accurate astronomical calculations with an immersive vintage poster aesthetic.
 
 > **Quick Links:** [Documentation Index](docs/index.md) | [Build Guide](docs/BuildAndRun.md) | [GitHub](https://github.com/tholewis/dune-moon)
 
-![Lithium Main Interface](docs/images/main-interface.png)
+![Dune Moon Main Interface](docs/images/main-interface.png)
 
 ## ✨ Features
 
@@ -79,7 +79,7 @@ cd dune-moon
 
 2. Open the project in Xcode:
 ```bash
-open Lithium.xcodeproj
+open DuneMoon.xcodeproj
 ```
 
 3. Select your target device or simulator
@@ -92,7 +92,7 @@ The app requires location permissions to calculate accurate moonrise/moonset tim
 
 ```xml
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>Lithium needs your location to calculate accurate moonrise and moonset times for your area.</string>
+<string>Dune Moon needs your location to calculate accurate moonrise and moonset times for your area.</string>
 ```
 
 ## 📖 Usage
@@ -106,8 +106,8 @@ The app requires location permissions to calculate accurate moonrise/moonset tim
 ## 🏗️ Project Structure
 
 ```
-Lithium/
-├── LithiumApp.swift              # App entry point
+DuneMoon/
+├── DuneMoonApp.swift              # App entry point
 ├── ContentView.swift             # Main view with timeline and moon display
 ├── MoonPhaseView.swift           # Custom moon phase visualization
 ├── MoonPhaseCalculator.swift    # Astronomical calculation engine
@@ -124,7 +124,7 @@ Lithium/
 ## 🔬 How It Works
 
 ### Moon Phase Calculation
-Lithium uses the synodic month (29.53 days) to calculate moon phases based on a reference new moon date. The phase is computed as:
+Dune Moon uses the synodic month (29.53 days) to calculate moon phases based on a reference new moon date. The phase is computed as:
 
 ```swift
 let daysSinceNewMoon = daysBetween(from: referenceNewMoon, to: date)
@@ -214,4 +214,4 @@ For questions, suggestions, or issues, please open an issue on GitHub.
 
 ---
 
-*"He who controls the moon phases controls the universe."* - Lithium Motto (adapted from Dune)
+*"He who controls the moon phases controls the universe."* - Dune Moon Motto (adapted from Dune)

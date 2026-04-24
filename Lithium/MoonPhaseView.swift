@@ -1,5 +1,5 @@
 //  MoonPhaseView.swift
-//  Lithium
+//  DuneMoon
 //
 //  Dune-inspired moon phase visualization
 //

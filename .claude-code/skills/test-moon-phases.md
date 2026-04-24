@@ -56,7 +56,7 @@ let farPast = DateComponents(year: 1990, month: 1, day: 1)
 
 For each test:
 
-1. **Read** `Lithium/MoonPhaseCalculator.swift`
+1. **Read** `Dune Moon/MoonPhaseCalculator.swift`
 2. **Call** `MoonPhaseCalculator.calculatePhaseData(for: date)`
 3. **Verify**:
    - Phase value is between 0.0 and 1.0

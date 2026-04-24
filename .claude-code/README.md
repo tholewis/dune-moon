@@ -1,6 +1,6 @@
-# Claude Code Skills for Lithium
+# Claude Code Skills for Dune Moon
 
-This directory contains custom Claude Code skills specifically designed for the Lithium/Dune Moon project.
+This directory contains custom Claude Code skills specifically designed for the Dune Moon project.
 
 ## Available Skills
 

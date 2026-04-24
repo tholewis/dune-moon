@@ -19,7 +19,7 @@ Render the Arrakis view with the current date's moon phase:
 ```swift
 // Use RenderPreview tool
 RenderPreview(
-    sourceFilePath: "Lithium/ArrakisMoonView.swift",
+    sourceFilePath: "Dune Moon/ArrakisMoonView.swift",
     timeout: 60
 )
 ```
@@ -64,7 +64,7 @@ phase: 0.85, illumination: 25, phaseName: "Waning Crescent"
 
 ## Steps
 
-1. **Read** `Lithium/ArrakisMoonView.swift`
+1. **Read** `Dune Moon/ArrakisMoonView.swift`
 2. **Verify** the file exists and is syntactically correct
 3. **Call RenderPreview** with appropriate parameters
 4. **Display** the resulting PNG image
