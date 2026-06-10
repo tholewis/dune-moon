@@ -29,19 +29,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		544D82322FBFB4860059EA40 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
 		54F13D9C2F32A0B800BFCFB5 = {
 			isa = PBXGroup;
 			children = (
 				54F13DA72F32A0B800BFCFB5 /* DuneMoon */,
 				54F13DA62F32A0B800BFCFB5 /* Products */,
-				544D82322FBFB4860059EA40 /* Preview Content */,
 			);
 			sourceTree = "<group>";
 		};
@@ -266,6 +258,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DuneMoon/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dune Moon";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DuneMoon needs your location to calculate accurate moonrise and moonset times for your area.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -296,6 +290,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DuneMoon/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dune Moon";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DuneMoon needs your location to calculate accurate moonrise and moonset times for your area.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
