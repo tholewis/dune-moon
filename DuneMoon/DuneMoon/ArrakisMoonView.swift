@@ -25,7 +25,7 @@ struct ArrakisMoonView: View {
                 // Overlay the dynamic moon emoji to completely cover the illustrated moon
                 VStack {
                     HStack {
-                        Text(moonEmoji)
+                        Text(phaseData.emoji)
                             .font(.system(size: 200))
                             .shadow(color: Color.black.opacity(0.3), radius: 8, x: 2, y: 2)
                             .padding(.leading, 8)
@@ -108,29 +108,6 @@ struct ArrakisMoonView: View {
         }
         .onTapGesture {
             dismiss()
-        }
-    }
-    
-    // Get appropriate moon emoji based on phase
-    private var moonEmoji: String {
-        let phase = phaseData.phase
-        
-        if phase < 0.05 || phase > 0.95 {
-            return "🌑" // New Moon
-        } else if phase < 0.20 {
-            return "🌒" // Waxing Crescent
-        } else if phase < 0.30 {
-            return "🌓" // First Quarter
-        } else if phase < 0.45 {
-            return "🌔" // Waxing Gibbous
-        } else if phase < 0.55 {
-            return "🌕" // Full Moon
-        } else if phase < 0.70 {
-            return "🌖" // Waning Gibbous
-        } else if phase < 0.80 {
-            return "🌗" // Last Quarter
-        } else {
-            return "🌘" // Waning Crescent
         }
     }
 }

@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedDate = Date()
     @State private var showCalendar = false
-    @State private var showIconExporter = false
     @State private var showArrakisView = false
     
     private var phaseData: MoonPhaseData {
@@ -47,20 +46,6 @@ struct ContentView: View {
                 VStack(spacing: 30) {
                     // Header with title
                     VStack(spacing: 8) {
-                        HStack {
-                            Spacer()
-                            
-                            // Hidden button to access icon exporter
-                            Button(action: {
-                                showIconExporter = true
-                            }) {
-                                Image(systemName: "gear")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(duneSand.opacity(0.3))
-                            }
-                            .padding(.trailing)
-                        }
-                        
                         Text("MOON PHASE TRACKER")
                             .font(.system(size: 16, weight: .black, design: .serif))
                             .foregroundStyle(
@@ -99,7 +84,11 @@ struct ContentView: View {
                     
                     // Main moon phase display
                     VStack(spacing: 16) {
-                        MoonPhaseView(phaseData: phaseData, size: 240)
+                        Text(phaseData.emoji)
+                            .font(.system(size: 200))
+                            .frame(width: 240, height: 240)
+                            .shadow(color: Color.black.opacity(0.3), radius: 8, x: 2, y: 2)
+                            .spiceGlow(intensity: 0.5)
                             .id(selectedDate)
                         
                         // Quick stats below moon
@@ -212,9 +201,6 @@ struct ContentView: View {
                     }
                     .padding(.vertical, 30)
                 }
-            }
-            .sheet(isPresented: $showIconExporter) {
-                IconExporterView()
             }
             .fullScreenCover(isPresented: $showArrakisView) {
                 ArrakisMoonView(phaseData: phaseData)

@@ -2,8 +2,8 @@
 title: "Dune Moon Architecture Guide"
 description: "Comprehensive guide to Dune Moon's SwiftUI architecture, design patterns, and data flow"
 category: "architecture"
-version: "1.0.0"
-last_updated: "2026-04-07"
+version: "1.1.0"
+last_updated: "2026-06-15"
 tags: ["swiftui", "mvvm", "architecture", "design-patterns"]
 audience: "developers"
 ---
@@ -32,9 +32,9 @@ Each file has a single, well-defined responsibility:
 |------|---------------|
 | `DuneMoonApp.swift` | App lifecycle and entry point |
 | `ContentView.swift` | Main UI composition and state coordination |
-| `MoonPhaseCalculator.swift` | All astronomical calculations |
+| `MoonPhaseCalculator.swift` | All astronomical calculations (phase data + fallback moonrise/moonset) |
+| `WeatherMoonService.swift` | WeatherKit moonrise/moonset fetching, caching, and attribution |
 | `LocationManager.swift` | GPS and location services |
-| `MoonPhaseView.swift` | Moon visualization rendering |
 | `TimelineView.swift` | Date selection and navigation |
 | `PhaseInfoPanel.swift` | Information display |
 | `ArrakisMoonView.swift` | Fullscreen poster experience |
@@ -198,6 +198,22 @@ LocationManager
 └── locationManager(_:didUpdateLocations:)
 ```
 
+### WeatherMoonService (Observable Object, @MainActor)
+
+Primary source for moonrise/moonset via Apple WeatherKit, with the local
+`MoonPhaseCalculator.calculateMoonTimes` used as a fallback in `PhaseInfoPanel`.
+
+```
+WeatherMoonService
+├── moonTimes(for:at:) async → (rise: Date?, set: Date?)?   // nil ⇒ caller falls back
+├── @Published attribution: WeatherAttribution?              // required Apple Weather mark
+└── cache: [coordinate+day → times]
+```
+
+`PhaseInfoPanel` seeds the cards with the local calculation, then upgrades to
+WeatherKit values inside a `.task` when available. See
+[WeatherKit Integration](WeatherKit.md) for the full data flow and requirements.
+
 ## Memory Management
 
 ### Efficient State Updates
@@ -300,8 +316,16 @@ Ready for localization:
 ### Data Storage
 
 - No persistent storage (stateless app)
-- No user data collected
-- No network requests
+- No user data collected or stored
+
+### Network
+
+- The only network use is **Apple WeatherKit**, queried for moonrise/moonset times
+  using the device's location. No user data is sent to any other service.
+- WeatherKit authenticates via the `com.apple.developer.weatherkit` entitlement —
+  no API keys or tokens are stored in the app.
+- All other features (phase, illumination, emoji, calendar, timeline) work fully
+  offline; WeatherKit failures fall back to local calculation.
 
 ## Build Configuration
 

@@ -15,6 +15,20 @@ struct MoonPhaseData {
     let isWaxing: Bool
     let daysToNextPhase: Int
     let nextPhaseName: String
+
+    // Moon phase emoji corresponding to the current phase value
+    var emoji: String {
+        switch phase {
+        case ..<0.05, 0.95...: return "🌑" // New Moon
+        case ..<0.20:          return "🌒" // Waxing Crescent
+        case ..<0.30:          return "🌓" // First Quarter
+        case ..<0.45:          return "🌔" // Waxing Gibbous
+        case ..<0.55:          return "🌕" // Full Moon
+        case ..<0.70:          return "🌖" // Waning Gibbous
+        case ..<0.80:          return "🌗" // Last Quarter
+        default:               return "🌘" // Waning Crescent
+        }
+    }
 }
 
 class MoonPhaseCalculator {
