@@ -182,7 +182,8 @@ struct CalendarDayCell: View {
             
             // Mini moon phase
             let phaseData = MoonPhaseCalculator.calculatePhase(for: date)
-            MoonPhaseView(phaseData: phaseData, size: 24, showGlow: false)
+            Text(phaseData.emoji)
+                .font(.system(size: 24))
         }
         .frame(maxWidth: .infinity)
         .frame(height: 50)

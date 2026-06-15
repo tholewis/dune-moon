@@ -99,7 +99,8 @@ struct TimelineDayItem: View {
         VStack(spacing: 4) {
             // Mini moon phase
             let phaseData = MoonPhaseCalculator.calculatePhase(for: date)
-            MoonPhaseView(phaseData: phaseData, size: size * 0.6, showGlow: isSelected)
+            Text(phaseData.emoji)
+                .font(.system(size: size * 0.6))
                 .scaleEffect(isSelected ? 1.2 : 1.0)
             
             // Day number

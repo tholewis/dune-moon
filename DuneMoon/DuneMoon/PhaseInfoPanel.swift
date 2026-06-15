@@ -11,18 +11,21 @@ import CoreLocation
 struct PhaseInfoPanel: View {
     let date: Date
     @StateObject private var locationManager = LocationManager()
-    
+    @StateObject private var weatherMoon = WeatherMoonService()
+
+    // Seeded with the local calculation; upgraded to WeatherKit values when available.
+    @State private var moonTimes: (rise: Date?, set: Date?) = (nil, nil)
+    // True once WeatherKit moonrise/moonset have replaced the local seed.
+    @State private var usingWeatherKit = false
+
     private var phaseData: MoonPhaseData {
         MoonPhaseCalculator.calculatePhase(for: date)
     }
-    
-    private var moonTimes: (rise: Date?, set: Date?) {
+
+    // Re-run the WeatherKit fetch whenever the date or resolved location changes.
+    private var moonTimesTaskID: String {
         let coord = locationManager.coordinate
-        return MoonPhaseCalculator.calculateMoonTimes(
-            for: date,
-            latitude: coord.latitude,
-            longitude: coord.longitude
-        )
+        return "\(date.timeIntervalSince1970)-\(coord.latitude)-\(coord.longitude)"
     }
     
     var body: some View {
@@ -118,7 +121,12 @@ struct PhaseInfoPanel: View {
                     color: duneOrange
                 )
             }
-            
+
+            // Apple Weather attribution — required whenever WeatherKit data is shown.
+            if usingWeatherKit, let attribution = weatherMoon.attribution {
+                WeatherAttributionView(attribution: attribution)
+            }
+
             // Next phase countdown
             VStack(spacing: 8) {
                 HStack {
@@ -165,6 +173,24 @@ struct PhaseInfoPanel: View {
         .padding()
         .onAppear {
             locationManager.requestLocation()
+        }
+        .task(id: moonTimesTaskID) {
+            let coord = locationManager.coordinate
+
+            // Seed immediately with the local calculation so the cards are never blank
+            // while loading, offline, or for dates outside WeatherKit's window.
+            moonTimes = MoonPhaseCalculator.calculateMoonTimes(
+                for: date,
+                latitude: coord.latitude,
+                longitude: coord.longitude
+            )
+            usingWeatherKit = false
+
+            // Upgrade to WeatherKit's location-accurate times when available.
+            if let weatherTimes = await weatherMoon.moonTimes(for: date, at: coord) {
+                moonTimes = weatherTimes
+                usingWeatherKit = true
+            }
         }
     }
     
