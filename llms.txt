@@ -17,9 +17,10 @@ Dune Moon is a Dune-inspired moon phase tracking iOS app that displays accurate 
 
 1. **Real-time Moon Phase Display** - Shows current moon phase with emoji representation
 2. **Timeline View** - 7-day forecast of upcoming moon phases
-3. **Astronomical Calculations** - Precise phase, illumination, moonrise/moonset times
-4. **Arrakis Observatory View** - Fullscreen vintage poster-style view with dynamic moon
-5. **Location-Aware** - Uses device location for accurate rise/set times
+3. **Astronomical Calculations** - Local phase, illumination, and fallback moonrise/moonset times
+4. **WeatherKit Moonrise/Moonset** - Location-accurate rise/set from Apple WeatherKit, with local fallback
+5. **Arrakis Observatory View** - Fullscreen vintage poster-style view with dynamic moon
+6. **Location-Aware** - Uses device location for WeatherKit and rise/set calculations
 
 ## Documentation Structure
 
@@ -44,13 +45,13 @@ All documentation files include frontmatter metadata (title, description, catego
 
 ### Core Files
 - `DuneMoon/DuneMoonApp.swift` - App entry point
-- `DuneMoon/ContentView.swift` - Main view container with tab navigation
-- `DuneMoon/MoonPhaseCalculator.swift` - Astronomical calculation engine
+- `DuneMoon/ContentView.swift` - Main view container; renders the moon as an emoji
+- `DuneMoon/MoonPhaseCalculator.swift` - Astronomical calculation engine (phase + fallback rise/set)
+- `DuneMoon/WeatherMoonService.swift` - WeatherKit moonrise/moonset + Apple Weather attribution
 - `DuneMoon/LocationManager.swift` - CoreLocation wrapper for GPS data
 
 ### View Components
-- `DuneMoon/MoonPhaseView.swift` - Main moon display with phase emoji
-- `DuneMoon/TimelineView.swift` - 7-day forecast timeline
+- `DuneMoon/TimelineView.swift` - Scrollable date timeline (±15 days)
 - `DuneMoon/ArrakisMoonView.swift` - Fullscreen Arrakis observatory poster view
 - `DuneMoon/PhaseInfoPanel.swift` - Information panel showing phase details
 - `DuneMoon/CalendarGridView.swift` - Calendar grid with moon phases
@@ -84,7 +85,13 @@ illumination = (1 - cos(phase * 2π)) / 2 * 100%
 ```
 
 ### Moonrise/Moonset
-Based on observer's latitude/longitude and date. Uses astronomical algorithms for lunar position relative to local horizon.
+Primary source is **Apple WeatherKit** (`WeatherMoonService`), queried by the device's
+latitude/longitude for location-accurate times. When WeatherKit is unavailable (offline,
+not entitled, or for dates outside its ~10-day forecast window), the app falls back to a
+local astronomical algorithm in `MoonPhaseCalculator.calculateMoonTimes`. WeatherKit
+requires a paid Apple Developer Program membership, the WeatherKit entitlement
+(`com.apple.developer.weatherkit`), and network access; the Apple Weather attribution
+mark is shown whenever WeatherKit data is displayed. See `docs/WeatherKit.md`.
 
 ## Design System
 
@@ -133,10 +140,10 @@ xcodebuild -project DuneMoon.xcodeproj -scheme DuneMoon -sdk iphonesimulator
 
 ## Version Information
 
-- **Current Version:** 1.0.0
+- **Current Version:** 1.1.0
 - **iOS Deployment Target:** 17.0
 - **Swift Version:** 5.9
-- **Last Updated:** 2026-04-07
+- **Last Updated:** 2026-06-15
 
 ## External References
 
@@ -152,4 +159,4 @@ xcodebuild -project DuneMoon.xcodeproj -scheme DuneMoon -sdk iphonesimulator
 
 ---
 
-**For AI Assistants:** This project uses pure Swift/SwiftUI with no external dependencies. All astronomical calculations are self-contained in `MoonPhaseCalculator.swift`. The app follows standard SwiftUI patterns with `@StateObject` for state management. When modifying code, maintain the Dune theme aesthetics (desert colors, vintage poster style) and ensure astronomical accuracy.
+**For AI Assistants:** This project uses Swift/SwiftUI with no third-party package dependencies. It relies on two Apple system frameworks beyond SwiftUI: CoreLocation (GPS) and WeatherKit (moonrise/moonset, gated by the `com.apple.developer.weatherkit` entitlement). All phase/illumination calculations are self-contained in `MoonPhaseCalculator.swift`, which also provides the offline moonrise/moonset fallback; WeatherKit access lives in `WeatherMoonService.swift`. The app follows standard SwiftUI patterns with `@StateObject`/`@State` for state management. When modifying code, maintain the Dune theme aesthetics (desert colors, vintage poster style), ensure astronomical accuracy, and keep WeatherKit usage behind a graceful local fallback. Do NOT hardcode WeatherKit API keys/tokens — native WeatherKit authenticates via the entitlement.

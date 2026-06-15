@@ -2,8 +2,8 @@
 title: "Dune Moon Documentation Index"
 description: "Complete navigation guide to all Dune Moon project documentation"
 category: "index"
-version: "1.0.0"
-last_updated: "2026-04-07"
+version: "1.1.0"
+last_updated: "2026-06-15"
 tags: ["index", "navigation", "documentation"]
 audience: "all"
 ---
@@ -48,6 +48,7 @@ audience: "all"
 | Document | Description | Audience |
 |----------|-------------|----------|
 | [Moon Phase Calculation](MoonPhaseCalculation.md) | Astronomical algorithms, formulas, accuracy, mathematical models | Developers, Scientists |
+| [WeatherKit Integration](WeatherKit.md) | Moonrise/moonset via Apple WeatherKit, hybrid fallback, requirements, attribution | Developers |
 | [Claude Code Skills](ClaudeCodeSkills.md) | Automation skills, testing tools, documentation maintenance | Developers |
 
 ### Development Tools
@@ -103,7 +104,8 @@ audience: "all"
 | **Synodic Month** | Time for Moon to return to same phase (~29.53 days) | [Moon Phase Calculation](MoonPhaseCalculation.md#synodic-month-method) |
 | **Phase Value** | Decimal 0.0-1.0 representing moon cycle position | [Moon Phase Calculation](MoonPhaseCalculation.md#phase-calculation) |
 | **Illumination** | Percentage of moon's visible surface lit by sun | [Moon Phase Calculation](MoonPhaseCalculation.md#illumination-percentage) |
-| **Moonrise/Moonset** | Times when moon crosses local horizon | [Moon Phase Calculation](MoonPhaseCalculation.md#moonrise-and-moonset) |
+| **Moonrise/Moonset** | Times when moon crosses local horizon (via WeatherKit, with local fallback) | [WeatherKit Integration](WeatherKit.md) |
+| **WeatherKit** | Apple framework providing location-accurate moonrise/moonset times | [WeatherKit Integration](WeatherKit.md) |
 
 ### Architecture Terms
 
@@ -131,10 +133,10 @@ audience: "all"
 DuneMoon/DuneMoon/
 ├── DuneMoonApp.swift           # App entry point
 ├── ContentView.swift          # Main view container
-├── MoonPhaseCalculator.swift  # Astronomical calculations
+├── MoonPhaseCalculator.swift  # Astronomical calculations (phase + fallback rise/set)
+├── WeatherMoonService.swift   # WeatherKit moonrise/moonset + attribution
 ├── LocationManager.swift      # GPS and location services
-├── MoonPhaseView.swift        # Moon visualization
-├── TimelineView.swift         # 7-day forecast timeline
+├── TimelineView.swift         # Scrollable date timeline
 ├── ArrakisMoonView.swift      # Fullscreen poster view
 ├── PhaseInfoPanel.swift       # Information panel
 ├── CalendarGridView.swift     # Calendar grid view
@@ -147,6 +149,7 @@ docs/
 ├── index.md                  # This file - Documentation index
 ├── Architecture.md           # Architecture and design patterns
 ├── MoonPhaseCalculation.md   # Astronomical algorithms
+├── WeatherKit.md             # WeatherKit moonrise/moonset integration
 ├── UIComponents.md           # SwiftUI views and design system
 ├── BuildAndRun.md            # Build and deployment guide
 └── ClaudeCodeSkills.md       # Development automation skills

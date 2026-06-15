@@ -2,8 +2,8 @@
 title: "Moon Phase Calculation Documentation"
 description: "Detailed explanation of astronomical algorithms for moon phase, illumination, and rise/set time calculations"
 category: "technical-reference"
-version: "1.0.0"
-last_updated: "2026-04-07"
+version: "1.1.0"
+last_updated: "2026-06-15"
 tags: ["astronomy", "algorithms", "calculations", "mathematics"]
 audience: "developers"
 ---
@@ -181,6 +181,12 @@ func calculateNextPhase(from date: Date, phase: Double) -> (daysToNext: Int, nex
 ```
 
 ## Moonrise & Moonset Calculation
+
+> **Note:** As of v1.1.0, moonrise/moonset times are sourced from **Apple WeatherKit**
+> when available (see [WeatherKit Integration](WeatherKit.md)). The algorithm below is
+> the **local fallback** used when WeatherKit is unavailable (offline, not entitled, or
+> for dates outside its forecast window). Phase, illumination, phase name, and emoji are
+> always computed locally with the methods above.
 
 ### Julian Date
 
