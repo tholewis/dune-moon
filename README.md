@@ -28,8 +28,12 @@ A beautiful iOS app that tracks lunar phases with a stunning Dune/Arrakis-inspir
 - Smooth animations and intuitive gesture controls
 
 ### 🌑 Accurate Moon Phase Calculations
-- Real-time moon phase visualization with custom-drawn graphics
-- Precise illumination percentage calculations
+- Moon phase shown as a Unicode emoji that matches Apple Weather: for the selected date
+  the phase comes from **WeatherKit** when available, with a precise local calculation
+  as the fallback (and for the calendar/timeline dates)
+- Local phase computed at the exact instant (not snapped to midnight) so it is correct
+  right at the new/full boundaries
+- Precise illumination percentage (cosine of the phase angle)
 - Phase names (New Moon, Waxing Crescent, First Quarter, Waxing Gibbous, Full Moon, Waning Gibbous, Last Quarter, Waning Crescent)
 - Days until next major phase
 - Waxing/waning status indication

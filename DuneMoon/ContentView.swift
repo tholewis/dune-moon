@@ -11,9 +11,25 @@ struct ContentView: View {
     @State private var selectedDate = Date()
     @State private var showCalendar = false
     @State private var showArrakisView = false
-    
+
+    @StateObject private var locationManager = LocationManager()
+    @StateObject private var weatherMoon = WeatherMoonService()
+    @State private var wkMoon: WeatherMoon?
+
+    // Local calculation, with WeatherKit's phase applied as a display override when
+    // available (so the main display matches Apple Weather). Illumination stays local.
     private var phaseData: MoonPhaseData {
-        MoonPhaseCalculator.calculatePhase(for: selectedDate)
+        let data = MoonPhaseCalculator.calculatePhase(for: selectedDate)
+        if let wk = wkMoon {
+            return data.applyingWeatherKit(wk)
+        }
+        return data
+    }
+
+    // Re-run the WeatherKit fetch whenever the date or resolved location changes.
+    private var moonTaskID: String {
+        let coord = locationManager.coordinate
+        return "\(selectedDate.timeIntervalSince1970)-\(coord.latitude)-\(coord.longitude)"
     }
     
     var body: some View {
@@ -84,7 +100,7 @@ struct ContentView: View {
                     
                     // Main moon phase display
                     VStack(spacing: 16) {
-                        Text(phaseData.emoji)
+                        Text(phaseData.displayEmoji)
                             .font(.system(size: 200))
                             .frame(width: 240, height: 240)
                             .shadow(color: Color.black.opacity(0.3), radius: 8, x: 2, y: 2)
@@ -95,7 +111,7 @@ struct ContentView: View {
                         HStack(spacing: 30) {
                             StatBadge(
                                 label: "Phase",
-                                value: phaseData.phaseName,
+                                value: phaseData.displayName,
                                 icon: "moon.stars.fill"
                             )
                             .id("\(selectedDate)-phase")
@@ -204,6 +220,14 @@ struct ContentView: View {
             }
             .fullScreenCover(isPresented: $showArrakisView) {
                 ArrakisMoonView(phaseData: phaseData)
+            }
+            .onAppear {
+                locationManager.requestLocation()
+            }
+            .task(id: moonTaskID) {
+                // When this returns nil (offline / out of range / not entitled), the
+                // display falls back to the local calculation.
+                wkMoon = await weatherMoon.moon(for: selectedDate, at: locationManager.coordinate)
             }
         }
     }

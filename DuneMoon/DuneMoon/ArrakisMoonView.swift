@@ -25,7 +25,7 @@ struct ArrakisMoonView: View {
                 // Overlay the dynamic moon emoji to completely cover the illustrated moon
                 VStack {
                     HStack {
-                        Text(phaseData.emoji)
+                        Text(phaseData.displayEmoji)
                             .font(.system(size: 200))
                             .shadow(color: Color.black.opacity(0.3), radius: 8, x: 2, y: 2)
                             .padding(.leading, 8)
@@ -47,7 +47,7 @@ struct ArrakisMoonView: View {
                             .kerning(6)
                             .padding(.top, 16)
                         
-                        Text(phaseData.phaseName.uppercased())
+                        Text(phaseData.displayName.uppercased())
                             .font(.system(size: 14, weight: .bold, design: .serif))
                             .foregroundColor(Color(red: 0.40, green: 0.32, blue: 0.25))
                             .kerning(3)
@@ -74,7 +74,7 @@ struct ArrakisMoonView: View {
                                 .frame(width: 2, height: 50)
                             
                             VStack(spacing: 4) {
-                                Text(phaseData.phaseName.uppercased())
+                                Text(phaseData.displayName.uppercased())
                                     .font(.system(size: 20, weight: .black, design: .serif))
                                     .foregroundColor(Color(red: 0.25, green: 0.20, blue: 0.15))
                                     .multilineTextAlignment(.center)

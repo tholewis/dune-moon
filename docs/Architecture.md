@@ -33,7 +33,7 @@ Each file has a single, well-defined responsibility:
 | `DuneMoonApp.swift` | App lifecycle and entry point |
 | `ContentView.swift` | Main UI composition and state coordination |
 | `MoonPhaseCalculator.swift` | All astronomical calculations (phase data + fallback moonrise/moonset) |
-| `WeatherMoonService.swift` | WeatherKit moonrise/moonset fetching, caching, and attribution |
+| `WeatherMoonService.swift` | WeatherKit moon phase + moonrise/moonset fetching, caching, and attribution |
 | `LocationManager.swift` | GPS and location services |
 | `TimelineView.swift` | Date selection and navigation |
 | `PhaseInfoPanel.swift` | Information display |
@@ -200,19 +200,20 @@ LocationManager
 
 ### WeatherMoonService (Observable Object, @MainActor)
 
-Primary source for moonrise/moonset via Apple WeatherKit, with the local
-`MoonPhaseCalculator.calculateMoonTimes` used as a fallback in `PhaseInfoPanel`.
+Primary source for the selected date's moon phase and moonrise/moonset via Apple
+WeatherKit, with the local `MoonPhaseCalculator` used as a fallback.
 
 ```
 WeatherMoonService
-├── moonTimes(for:at:) async → (rise: Date?, set: Date?)?   // nil ⇒ caller falls back
-├── @Published attribution: WeatherAttribution?              // required Apple Weather mark
-└── cache: [coordinate+day → times]
+├── moon(for:at:) async → WeatherMoon?              // phase + rise/set; nil ⇒ fall back
+├── @Published attribution: WeatherAttribution?     // required Apple Weather mark
+└── cache: [coordinate+day → WeatherMoon]
 ```
 
-`PhaseInfoPanel` seeds the cards with the local calculation, then upgrades to
-WeatherKit values inside a `.task` when available. See
-[WeatherKit Integration](WeatherKit.md) for the full data flow and requirements.
+`ContentView` and `PhaseInfoPanel` apply WeatherKit's phase to the selected date via
+`MoonPhaseData.applyingWeatherKit(_:)`, which keeps the instantaneous local phase on
+WeatherKit's whole-day New/Full labels (so a new-moon day reads as a crescent, matching
+Apple Weather). See [WeatherKit Integration](WeatherKit.md) for the full data flow.
 
 ## Memory Management
 
