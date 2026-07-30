@@ -104,16 +104,18 @@ class MoonPhaseCalculator {
     }
 
     private static func calculateNextPhase(currentPhase: Double) -> (Int, String) {
+        // Thresholds are the end boundary of each phase (matching classify()),
+        // paired with the name of the phase that starts at that boundary.
         let phases: [(threshold: Double, name: String)] = [
-            (0.033, "New Moon"),
-            (0.216, "Waxing Crescent"),
-            (0.283, "First Quarter"),
-            (0.466, "Waxing Gibbous"),
-            (0.533, "Full Moon"),
-            (0.716, "Waning Gibbous"),
-            (0.783, "Last Quarter"),
-            (0.967, "Waning Crescent"),
-            (1.033, "New Moon")
+            (0.02, "Waxing Crescent"),
+            (0.23, "First Quarter"),
+            (0.27, "Waxing Gibbous"),
+            (0.48, "Full Moon"),
+            (0.52, "Waning Gibbous"),
+            (0.73, "Last Quarter"),
+            (0.77, "Waning Crescent"),
+            (0.98, "New Moon"),
+            (1.02, "Waxing Crescent")
         ]
         
         for phase in phases {
