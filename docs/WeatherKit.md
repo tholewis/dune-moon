@@ -1,8 +1,8 @@
 ---
 title: "WeatherKit Integration"
-description: "How Dune Moon uses Apple WeatherKit for moonrise/moonset times, including the local fallback, requirements, and attribution"
+description: "How Dune Moon uses Apple WeatherKit for the moon phase and moonrise/moonset, including the New/Full refinement, local fallback, requirements, and attribution"
 category: "technical-reference"
-version: "1.1.0"
+version: "1.2.0"
 last_updated: "2026-06-15"
 tags: ["weatherkit", "moonrise", "moonset", "location", "ios", "fallback"]
 audience: "developers"
@@ -13,31 +13,37 @@ platform: "iOS 17.0+"
 
 ## Overview
 
-Dune Moon uses Apple's **WeatherKit** framework as the primary source for
-**moonrise and moonset times**. WeatherKit returns location-accurate lunar event
-times computed by Apple's weather service, which are more accurate than the app's
-own approximate astronomical calculation.
+Dune Moon uses Apple's **WeatherKit** framework as the primary source for the
+**moon phase and moonrise/moonset times of the selected date**. WeatherKit returns
+location-accurate lunar data computed by Apple's weather service — the same data the
+Apple Weather app shows — which is more accurate than the app's own approximate
+astronomical calculation.
 
-WeatherKit is used **only** for moonrise/moonset. Everything else — the moon phase
-value, illumination percentage, phase name, emoji, waxing/waning status, and the
-"days to next phase" countdown — continues to come from the local
-[`MoonPhaseCalculator`](MoonPhaseCalculation.md), which is instant, works offline,
-and works for any date.
+For the **selected date**, WeatherKit provides the phase name and emoji (so they match
+Apple Weather) plus moonrise/moonset. The local
+[`MoonPhaseCalculator`](MoonPhaseCalculation.md) supplies everything WeatherKit does
+not — the illumination percentage and the "days to next phase" countdown — and serves
+as the **fallback** for the phase and rise/set whenever WeatherKit is unavailable
+(offline, not entitled, or for dates outside its forecast window). The calendar grid
+and timeline (which show many dates, mostly outside WeatherKit's ~10-day window) always
+use the local calculation.
 
 > **Why a hybrid?** WeatherKit's moon data is limited: it exposes only `moonrise`,
 > `moonset`, and an 8-value `MoonPhase` enum (no continuous phase fraction and no
 > illumination percentage), its daily forecast only covers roughly 10 days from the
 > current day, and it requires network access plus an entitlement. The local
-> calculator covers any date offline. Combining them keeps the app's strengths while
-> upgrading the one metric WeatherKit does better.
+> calculator covers any date offline and supplies illumination. Combining them keeps
+> the app's strengths while matching Apple Weather for the selected date.
 
 ## What WeatherKit provides
 
 | Data | Source | Notes |
 |------|--------|-------|
+| Phase name + emoji (selected date) | `MoonEvents.phase` (`MoonPhase` enum) | Matches Apple Weather; falls back to local |
 | Moonrise time | `MoonEvents.moonrise` | `Date?` — may be `nil` on days with no moonrise |
 | Moonset time | `MoonEvents.moonset` | `Date?` — may be `nil` on days with no moonset |
-| Moon phase, illumination, phase name, emoji, next phase | `MoonPhaseCalculator` (local) | Not sourced from WeatherKit |
+| Illumination %, days-to-next-phase | `MoonPhaseCalculator` (local) | Not provided by WeatherKit |
+| Phase for calendar/timeline dates | `MoonPhaseCalculator` (local) | Mostly outside WeatherKit's window |
 
 ## How it works
 
@@ -45,68 +51,76 @@ and works for any date.
 
 `WeatherMoonService` is a `@MainActor` `ObservableObject` that wraps the shared
 `WeatherService`. It fetches the daily forecast for a coordinate, finds the
-`DayWeather` matching the requested day, and returns its moonrise/moonset. Results
-are cached by rounded coordinate and day. Any failure (offline, out of forecast
-range, or not entitled) returns `nil` so the caller can fall back.
+`DayWeather` matching the requested day, and returns a `WeatherMoon` snapshot (phase
+name/emoji, waxing flag, moonrise/moonset). Results are cached by rounded coordinate
+and day. Any failure (offline, out of forecast range, or not entitled) returns `nil`
+so the caller can fall back to the local calculation.
 
 ```swift
-import WeatherKit
-import CoreLocation
+let forecast = try await service.weather(for: location, including: .daily) // ~10 days
+guard let match = forecast.first(where: {
+    calendar.isDate($0.date, inSameDayAs: day)
+}) else { return nil } // Requested day is outside WeatherKit's forecast window.
 
-@MainActor
-final class WeatherMoonService: ObservableObject {
-    private let service = WeatherService.shared
+return WeatherMoon(
+    rise: match.moon.moonrise,
+    set: match.moon.moonset,
+    phaseName: match.moon.phase.displayName,   // e.g. "Waxing Crescent"
+    phaseEmoji: match.moon.phase.emoji,        // e.g. "🌒"
+    isWaxing: match.moon.phase.isWaxing,
+    // New/Full are whole-day labels; flagged so callers can refine them (see below).
+    isNewOrFull: match.moon.phase == .new || match.moon.phase == .full
+)
+```
 
-    /// Returns moonrise/moonset for `date` at `coordinate`, or `nil` if WeatherKit
-    /// can't supply it. Results are cached.
-    func moonTimes(
-        for date: Date,
-        at coordinate: CLLocationCoordinate2D
-    ) async -> (rise: Date?, set: Date?)? {
-        let calendar = Calendar.current
-        let day = calendar.startOfDay(for: date)
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        do {
-            // `.daily` returns ~10 contiguous days starting today.
-            let forecast = try await service.weather(for: location, including: .daily)
-            guard let match = forecast.first(where: {
-                calendar.isDate($0.date, inSameDayAs: day)
-            }) else {
-                return nil // Requested day is outside WeatherKit's forecast window.
-            }
-            return (rise: match.moon.moonrise, set: match.moon.moonset)
-        } catch {
-            return nil // Offline or not entitled — caller falls back to the local calc.
+### Daily vs. instantaneous phase (the New/Full refinement)
+
+WeatherKit's `MoonPhase` is a **per-day** label: it calls the *entire* new-moon day
+"New Moon", even though the instantaneous phase is already a thin **waxing crescent**
+a few hours after the exact instant — which is what Apple Weather's *headline* shows.
+To match that headline, `applyingWeatherKit(_:)` uses WeatherKit's label for every
+phase **except** New/Full, where it keeps the time-accurate local classification:
+
+```swift
+extension MoonPhaseData {
+    func applyingWeatherKit(_ wk: WeatherMoon) -> MoonPhaseData {
+        guard !wk.isNewOrFull else {
+            return self // Keep the instantaneous local phase for the New/Full instant.
         }
+        var copy = self
+        copy.phaseNameOverride = wk.phaseName
+        copy.emojiOverride = wk.phaseEmoji
+        copy.isWaxingOverride = wk.isWaxing
+        return copy
     }
 }
 ```
 
-### View layer: `PhaseInfoPanel` with local fallback
+So a new-moon day reads as "Waxing Crescent" once past the instant (matching Apple
+Weather), while crescent/gibbous/quarter days use WeatherKit's authoritative label.
 
-`PhaseInfoPanel` seeds the moonrise/moonset cards **immediately** with the local
-calculation so they are never blank, then upgrades to WeatherKit values inside a
-`.task` when they are available. The task re-runs when the selected date or the
-resolved location changes.
+### View layer
+
+`ContentView` (main display + Arrakis view) and `PhaseInfoPanel` each compute the
+local phase, then apply the WeatherKit override for the selected date inside a `.task`:
 
 ```swift
-// Seed with the local calculation (instant, offline, any date).
-moonTimes = MoonPhaseCalculator.calculateMoonTimes(
-    for: date,
-    latitude: coordinate.latitude,
-    longitude: coordinate.longitude
-)
-
-// Upgrade to WeatherKit's location-accurate times when available.
-if let weatherTimes = await weatherMoon.moonTimes(for: date, at: coordinate) {
-    moonTimes = weatherTimes      // WeatherKit succeeded
-    usingWeatherKit = true        // triggers the attribution mark
+private var phaseData: MoonPhaseData {
+    let data = MoonPhaseCalculator.calculatePhase(for: selectedDate)
+    if let wk = wkMoon { return data.applyingWeatherKit(wk) }
+    return data // local fallback (offline / out of range / not entitled)
 }
+
+// Fetched in a .task keyed on the date + resolved location:
+wkMoon = await weatherMoon.moon(for: selectedDate, at: locationManager.coordinate)
 ```
 
-The user's location comes from the existing
+Illumination and the next-phase countdown always come from the local calculation
+(WeatherKit provides neither). Moonrise/moonset use `wkMoon` when present, otherwise
+`MoonPhaseCalculator.calculateMoonTimes`. The location comes from the existing
 [`LocationManager`](Architecture.md#locationmanager-observable-object); if location is
-unavailable it falls back to a default coordinate.
+unavailable it falls back to a default coordinate. The calendar grid and timeline are
+not overridden — they always use the local calculation.
 
 ## Attribution (required)
 
@@ -149,16 +163,17 @@ category `WeatherKit`). A repeated JWT error such as:
 ```
 
 means the App ID is not yet authorized for WeatherKit (service not enabled or not yet
-propagated). Success logs `WeatherKit moon times: rise ..., set ...` and the Apple
+propagated). Success logs `WeatherKit moon: phase ..., rise ..., set ...` and the Apple
 Weather attribution mark appears.
 
 ## Behavior summary
 
-| Situation | Moonrise/Moonset shown | Attribution mark |
-|-----------|------------------------|------------------|
-| WeatherKit entitled, online, date in range | WeatherKit (location-accurate) | Shown |
-| Offline / not entitled / propagation pending | Local `MoonPhaseCalculator` | Hidden |
-| Date outside WeatherKit's ~10-day window | Local `MoonPhaseCalculator` | Hidden |
+| Situation | Phase shown | Moonrise/Moonset shown | Attribution mark |
+|-----------|-------------|------------------------|------------------|
+| WeatherKit available, crescent/gibbous/quarter day | WeatherKit label | WeatherKit (location-accurate) | Shown |
+| WeatherKit available, New/Full day | Instantaneous local (refined) | WeatherKit (location-accurate) | Shown |
+| Offline / not entitled / propagation pending | Local `MoonPhaseCalculator` | Local `MoonPhaseCalculator` | Hidden |
+| Date outside WeatherKit's ~10-day window | Local `MoonPhaseCalculator` | Local `MoonPhaseCalculator` | Hidden |
 
 ## Related documentation
 

@@ -54,6 +54,12 @@ let daysSinceNewMoon = daysBetween(from: referenceNewMoon, to: targetDate)
 let phase = (daysSinceNewMoon.truncatingRemainder(dividingBy: synodicMonth)) / synodicMonth
 ```
 
+> **Implementation note:** The code derives the Julian Date directly from the date's
+> timestamp — `date.timeIntervalSince1970 / 86400 + 2440587.5` — so the phase includes
+> the **time of day** rather than snapping to midnight. This keeps the phase correct
+> right at the new/full boundaries (e.g. a few hours after a new moon already reads as a
+> thin waxing crescent). The reference new moon is JD 2451550.26 (2000-01-06 18:14 UTC).
+
 **Phase Values:**
 - `0.0` = New Moon
 - `0.25` = First Quarter
@@ -98,29 +104,27 @@ Illumination (%) = [(1 - cos(θ)) / 2] × 100
 
 ## Phase Names
 
-Phase names are determined by phase value ranges:
+> **Note:** For the **selected date**, the displayed phase name/emoji come from
+> **WeatherKit** when available (matching Apple Weather) — see
+> [WeatherKit Integration](WeatherKit.md). The local classification below is the
+> fallback (offline / not entitled) and is what the calendar grid and timeline use.
+
+A single `classify(phase:)` function maps the continuous phase value to both a name and
+an emoji (keeping the two in sync). Boundaries follow Apple Weather's convention:
+New / Full / Quarter occupy narrow windows (~1 day) around their exact instants, with
+crescent and gibbous covering the spans between them.
 
 ```swift
-func calculatePhaseName(phase: Double) -> String {
+static func classify(phase: Double) -> (name: String, emoji: String) {
     switch phase {
-    case 0..<0.03, 0.97..<1.0:
-        return "New Moon"
-    case 0.03..<0.22:
-        return "Waxing Crescent"
-    case 0.22..<0.28:
-        return "First Quarter"
-    case 0.28..<0.47:
-        return "Waxing Gibbous"
-    case 0.47..<0.53:
-        return "Full Moon"
-    case 0.53..<0.72:
-        return "Waning Gibbous"
-    case 0.72..<0.78:
-        return "Last Quarter"
-    case 0.78..<0.97:
-        return "Waning Crescent"
-    default:
-        return "Unknown"
+    case ..<0.02, 0.98...: return ("New Moon", "🌑")
+    case ..<0.23:          return ("Waxing Crescent", "🌒")
+    case ..<0.27:          return ("First Quarter", "🌓")
+    case ..<0.48:          return ("Waxing Gibbous", "🌔")
+    case ..<0.52:          return ("Full Moon", "🌕")
+    case ..<0.73:          return ("Waning Gibbous", "🌖")
+    case ..<0.77:          return ("Last Quarter", "🌗")
+    default:               return ("Waning Crescent", "🌘")
     }
 }
 ```
@@ -130,15 +134,15 @@ func calculatePhaseName(phase: Double) -> String {
 ```
 Phase Range         Name
 ───────────────────────────────
-0.00 - 0.03         New Moon
-0.03 - 0.22         Waxing Crescent
-0.22 - 0.28         First Quarter
-0.28 - 0.47         Waxing Gibbous
-0.47 - 0.53         Full Moon
-0.53 - 0.72         Waning Gibbous
-0.72 - 0.78         Last Quarter
-0.78 - 0.97         Waning Crescent
-0.97 - 1.00         New Moon
+0.00 - 0.02         New Moon
+0.02 - 0.23         Waxing Crescent
+0.23 - 0.27         First Quarter
+0.27 - 0.48         Waxing Gibbous
+0.48 - 0.52         Full Moon
+0.52 - 0.73         Waning Gibbous
+0.73 - 0.77         Last Quarter
+0.77 - 0.98         Waning Crescent
+0.98 - 1.00         New Moon
 ```
 
 ## Waxing vs Waning

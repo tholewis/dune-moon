@@ -67,19 +67,28 @@ Uses synodic month calculation:
 - **Reference:** New Moon on January 6, 2000, 18:14 UTC
 - **Phase Value:** 0.0 (new) to 1.0 (cycle complete)
 
-### Phase to Emoji Mapping
+### Phase Source
+For the SELECTED date, the displayed phase name/emoji come from WeatherKit
+(`DayWeather.moon.phase`) when available, matching Apple Weather. WeatherKit's whole-day
+New/Full labels are refined with the instantaneous local phase (so a new-moon day past
+the exact instant reads as a crescent). The local calculation (below) is the fallback
+and is used for all calendar/timeline dates. See `docs/WeatherKit.md`.
+
+### Local Phase to Emoji Mapping (MoonPhaseCalculator.classify)
+Phase is computed from the exact timestamp (JD = timeIntervalSince1970/86400 + 2440587.5),
+reference new moon JD 2451550.26. New/Full/Quarter use narrow (~1 day) windows:
 ```swift
-0.00-0.05: 🌑 New Moon
-0.05-0.20: 🌒 Waxing Crescent
-0.20-0.30: 🌓 First Quarter
-0.30-0.45: 🌔 Waxing Gibbous
-0.45-0.55: 🌕 Full Moon
-0.55-0.70: 🌖 Waning Gibbous
-0.70-0.80: 🌗 Last Quarter
-0.80-1.00: 🌘 Waning Crescent
+0.00-0.02 & 0.98-1.00: 🌑 New Moon
+0.02-0.23:             🌒 Waxing Crescent
+0.23-0.27:             🌓 First Quarter
+0.27-0.48:             🌔 Waxing Gibbous
+0.48-0.52:             🌕 Full Moon
+0.52-0.73:             🌖 Waning Gibbous
+0.73-0.77:             🌗 Last Quarter
+0.77-0.98:             🌘 Waning Crescent
 ```
 
-### Illumination Calculation
+### Illumination Calculation (always local)
 ```
 illumination = (1 - cos(phase * 2π)) / 2 * 100%
 ```

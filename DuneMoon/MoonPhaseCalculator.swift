@@ -16,49 +16,42 @@ struct MoonPhaseData {
     let daysToNextPhase: Int
     let nextPhaseName: String
 
-    // Moon phase emoji corresponding to the current phase value
-    var emoji: String {
-        switch phase {
-        case ..<0.05, 0.95...: return "🌑" // New Moon
-        case ..<0.20:          return "🌒" // Waxing Crescent
-        case ..<0.30:          return "🌓" // First Quarter
-        case ..<0.45:          return "🌔" // Waxing Gibbous
-        case ..<0.55:          return "🌕" // Full Moon
-        case ..<0.70:          return "🌖" // Waning Gibbous
-        case ..<0.80:          return "🌗" // Last Quarter
-        default:               return "🌘" // Waning Crescent
-        }
-    }
+    // Optional display overrides sourced from WeatherKit for the selected date, so the
+    // shown phase matches Apple Weather. When nil, the locally computed values are used.
+    var phaseNameOverride: String? = nil
+    var emojiOverride: String? = nil
+    var isWaxingOverride: Bool? = nil
+
+    // Locally computed emoji for the continuous phase value.
+    var emoji: String { MoonPhaseCalculator.classify(phase: phase).emoji }
+
+    // Values to display: the WeatherKit override when present, otherwise the local value.
+    var displayName: String { phaseNameOverride ?? phaseName }
+    var displayEmoji: String { emojiOverride ?? emoji }
+    var displayIsWaxing: Bool { isWaxingOverride ?? isWaxing }
 }
 
 class MoonPhaseCalculator {
     
     // Calculate moon phase for a given date
     static func calculatePhase(for date: Date) -> MoonPhaseData {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day], from: date)
-        
-        // Julian date calculation
-        let year = components.year!
-        let month = components.month!
-        let day = components.day!
-        
-        let julianDate = calculateJulianDate(year: year, month: month, day: day)
-        
-        // Known new moon: January 6, 2000
-        let knownNewMoon = 2451550.1
+        // Precise Julian Date (UT), including the time of day so the phase is accurate
+        // right at the new/full boundaries (rather than snapping to midnight).
+        let julianDate = date.timeIntervalSince1970 / 86400.0 + 2440587.5
+
+        // Known new moon: January 6, 2000, 18:14 UTC (JD 2451550.26).
+        let knownNewMoon = 2451550.26
         let synodicMonth = 29.53058867 // Average lunar cycle
-        
-        let daysSinceNewMoon = julianDate - knownNewMoon
-        let newMoons = daysSinceNewMoon / synodicMonth
-        let phase = newMoons - floor(newMoons)
-        
+
+        var phase = (julianDate - knownNewMoon) / synodicMonth
+        phase -= floor(phase) // Fractional position in the cycle, 0.0..<1.0
+
         let illumination = calculateIllumination(phase: phase)
         let isWaxing = phase < 0.5
-        let phaseName = getPhaseName(phase: phase)
-        
+        let phaseName = classify(phase: phase).name
+
         let (daysToNext, nextName) = calculateNextPhase(currentPhase: phase)
-        
+
         return MoonPhaseData(
             phase: phase,
             illumination: illumination,
@@ -67,6 +60,22 @@ class MoonPhaseCalculator {
             daysToNextPhase: daysToNext,
             nextPhaseName: nextName
         )
+    }
+
+    // Classify a continuous phase value (0.0..<1.0) into a phase name and emoji.
+    // Boundaries follow Apple Weather's convention: New/Full/Quarter occupy narrow
+    // windows around their exact instants, with crescent/gibbous covering the rest.
+    static func classify(phase: Double) -> (name: String, emoji: String) {
+        switch phase {
+        case ..<0.02, 0.98...: return ("New Moon", "🌑")
+        case ..<0.23:          return ("Waxing Crescent", "🌒")
+        case ..<0.27:          return ("First Quarter", "🌓")
+        case ..<0.48:          return ("Waxing Gibbous", "🌔")
+        case ..<0.52:          return ("Full Moon", "🌕")
+        case ..<0.73:          return ("Waning Gibbous", "🌖")
+        case ..<0.77:          return ("Last Quarter", "🌗")
+        default:               return ("Waning Crescent", "🌘")
+        }
     }
     
     private static func calculateJulianDate(year: Int, month: Int, day: Int) -> Double {
@@ -89,39 +98,24 @@ class MoonPhaseCalculator {
     }
     
     private static func calculateIllumination(phase: Double) -> Double {
-        // Convert phase to illumination percentage
-        if phase < 0.5 {
-            return phase * 200.0
-        } else {
-            return (1.0 - phase) * 200.0
-        }
+        // Fraction of the disc lit, from the phase angle: (1 - cos θ) / 2.
+        let phaseAngle = phase * 2.0 * Double.pi
+        return (1.0 - cos(phaseAngle)) / 2.0 * 100.0
     }
-    
-    private static func getPhaseName(phase: Double) -> String {
-        switch phase {
-        case 0..<0.033: return "New Moon"
-        case 0.033..<0.216: return "Waxing Crescent"
-        case 0.216..<0.283: return "First Quarter"
-        case 0.283..<0.466: return "Waxing Gibbous"
-        case 0.466..<0.533: return "Full Moon"
-        case 0.533..<0.716: return "Waning Gibbous"
-        case 0.716..<0.783: return "Last Quarter"
-        case 0.783..<0.967: return "Waning Crescent"
-        default: return "New Moon"
-        }
-    }
-    
+
     private static func calculateNextPhase(currentPhase: Double) -> (Int, String) {
+        // Thresholds are the end boundary of each phase (matching classify()),
+        // paired with the name of the phase that starts at that boundary.
         let phases: [(threshold: Double, name: String)] = [
-            (0.033, "New Moon"),
-            (0.216, "Waxing Crescent"),
-            (0.283, "First Quarter"),
-            (0.466, "Waxing Gibbous"),
-            (0.533, "Full Moon"),
-            (0.716, "Waning Gibbous"),
-            (0.783, "Last Quarter"),
-            (0.967, "Waning Crescent"),
-            (1.033, "New Moon")
+            (0.02, "Waxing Crescent"),
+            (0.23, "First Quarter"),
+            (0.27, "Waxing Gibbous"),
+            (0.48, "Full Moon"),
+            (0.52, "Waning Gibbous"),
+            (0.73, "Last Quarter"),
+            (0.77, "Waning Crescent"),
+            (0.98, "New Moon"),
+            (1.02, "Waxing Crescent")
         ]
         
         for phase in phases {
